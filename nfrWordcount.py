@@ -72,5 +72,5 @@ except:
   pass
 outfile = infile + "-vocab.csv"
 print("Saving output in " + outfile)
-final.coalesce(1)
+final = final.coalesce(1)
 final.write.format("csv").mode("overwrite").options(header="false",sep="\t").save(path=outfile)
