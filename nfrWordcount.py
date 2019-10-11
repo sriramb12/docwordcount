@@ -8,8 +8,12 @@ from pyspark.sql.functions import udf
 from pyspark.sql.types import IntegerType, ArrayType, StringType
 from pyspark.sql.functions import lower, col
 
-
 spark = SparkSession.builder.appName("split").getOrCreate()
+
+def describe(output):
+  print("Final output has %d rows", output.count())
+  output.sort(col("tf").desc()).show(10)
+  output.sort(col("df").desc()).show(10)
 
 
 def processRegex(txt):
@@ -73,4 +77,6 @@ except:
 outfile = infile + "-vocab.csv"
 print("Saving output in " + outfile)
 final = final.coalesce(1)
+
+describe(final)
 final.write.format("csv").mode("overwrite").options(header="false",sep="\t").save(path=outfile)
